@@ -247,7 +247,7 @@ def cross(
         Rs[n] = min(Rs[n - 1] * Is[n - 1], Rs[n], Is[n] * Rs[n + 1])
 
     # Initialize cores at random
-    cores = [torch.randn(Rs[n], Is[n], Rs[n + 1]).to(device) for n in range(N)]
+    cores = [torch.randn(Rs[n], Is[n], Rs[n + 1]).to(device)*0 for n in range(N)]
 
     # Prepare left and right sets
     lsets = [np.array([[0]])] + [None] * (N - 1)
