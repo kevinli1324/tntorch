@@ -251,7 +251,8 @@ def cross(
 
     # Prepare left and right sets
     lsets = [np.array([[0]])] + [None] * (N - 1)
-    randint = np.hstack([np.random.randint(0, Is[n + 1], [max(Rs), 1]) for n in range(N - 1)] + [np.zeros([max(Rs), 1], dtype=int)])
+    #randint = np.hstack([np.random.randint(0, Is[n + 1], [max(Rs), 1]) for n in range(N - 1)] + [np.zeros([max(Rs), 1], dtype=int)])
+    randint = np.hstack([np.arange(0, Is[n + 1], int(.975*Is[n + 1])/max(Rs)).reshape((max(Rs), 1))[:max(Rs)]  for n in range(N - 1)] + [np.zeros([max(Rs), 1], dtype=int)])
     rsets = [randint[:Rs[n + 1], n:] for n in range(N - 1)] + [np.array([[0]])]
 
     t_linterfaces, t_rinterfaces = init_interfaces(tensors, rsets, N, device)
@@ -412,7 +413,8 @@ def cross(
             newRs[1:-1] = np.minimum(rmax, newRs[1:-1] + kickrank)
             for n in list(range(1, N)) + list(range(N - 1, 0, -1)):
                 newRs[n] = min(newRs[n - 1] * Is[n - 1], newRs[n], Is[n] * newRs[n + 1])
-            extra = np.hstack([np.random.randint(0, Is[n + 1], [max(newRs), 1]) for n in range(N - 1)] + [np.zeros([max(newRs), 1], dtype=int)])
+            #extra = np.hstack([np.random.randint(0, Is[n + 1], [max(newRs), 1]) for n in range(N - 1)] + [np.zeros([max(newRs), 1], dtype=int)])
+            extra = np.hstack([np.arange(0, Is[n + 1], int(.975*Is[n + 1])/max(newRs)).reshape((max(Rs), 1))[:max(newRs)]  for n in range(N - 1)] + [np.zeros([max(newRs), 1], dtype=int)])
             for n in range(N - 1):
                 if newRs[n + 1] > Rs[n + 1]:
                     rsets[n] = np.vstack([rsets[n], extra[:newRs[n + 1]-Rs[n + 1], n:]])
